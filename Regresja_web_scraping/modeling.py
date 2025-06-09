@@ -1,20 +1,18 @@
 """
-This script trains and evaluates several regression models to predict GDP values.
-Steps:
-1. Loads preprocessed data from a Parquet file.
-2. Splits the dataset into training, validation, and test sets.
-3. Trains different regression models on the training set.
-4. Evaluates each model using MSE, MAE, and R² on the validation set.
-5. Visualizes actual vs predicted GDP values for each model.
+This script trains multiple regression models to predict GDP based on various features.
+It evaluates their performance, visualizes regression results, and estimates feature importance using permutation importance.
 """
 
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.inspection import permutation_importance
+
+# Regressors
+from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 
@@ -22,59 +20,70 @@ from xgboost import XGBRegressor
 import matplotlib
 matplotlib.use('TkAgg')
 
+# Load dataset
+file_directory = "prepared_data.parquet"
+df = pd.read_parquet(file_directory)
 
-def evaluate_model(model, X_val, y_val, model_name):
-    """
-    Evaluates the given regression model and displays performance metrics and a scatter plot.
-    """
-    y_pred = model.predict(X_val)
+# Drop missing target values
+df = df.dropna(subset=["GDP"])
 
-    # Display performance metrics
-    print(f"\nModel: {model_name}")
-    print("MSE:", mean_squared_error(y_val, y_pred))
-    print("MAE:", mean_absolute_error(y_val, y_pred))
-    print("R²:", r2_score(y_val, y_pred))
+# Define features and target
+target_column = "GDP"
+X = df.drop(columns=[target_column, "Country"])  # Drop also non-numeric 'Country'
+y = df[target_column]
+feature_names = X.columns
 
-    # Visualization: Actual vs Predicted
-    plt.figure(figsize=(7, 5))
-    plt.scatter(y_val, y_pred, alpha=0.6)
-    plt.plot([y_val.min(), y_val.max()], [y_val.min(), y_val.max()], 'r--', label="Ideal fit")
+# Split the dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Models to evaluate
+models = {
+    "Linear Regression": LinearRegression(),
+    "KNN": KNeighborsRegressor(),
+    "Decision Tree": DecisionTreeRegressor(random_state=42),
+    "Random Forest": RandomForestRegressor(n_estimators=100, random_state=42),
+    "XGBoost": XGBRegressor(n_estimators=100, random_state=42)
+}
+
+# Evaluation loop
+for name, model in models.items():
+    print(f"\n===== {name} =====")
+
+    # Train
+    model.fit(X_train, y_train)
+
+    # Predict
+    y_pred = model.predict(X_test)
+
+    # Metrics
+    print("MSE:", mean_squared_error(y_test, y_pred))
+    print("MAE:", mean_absolute_error(y_test, y_pred))
+    print("R2:", r2_score(y_test, y_pred))
+
+    # === Plot regression ===
+    plt.figure(figsize=(6, 6))
+    plt.scatter(y_test, y_pred, alpha=0.6, edgecolors='k')
+    plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')
     plt.xlabel("Actual GDP")
     plt.ylabel("Predicted GDP")
-    plt.title(f"Actual vs Predicted GDP - {model_name}")
-    plt.legend()
+    plt.title(f"Regression Plot - {name}")
+    plt.grid(True)
     plt.tight_layout()
     plt.show()
 
+    # === Permutation Importance ===
+    print("Computing permutation importance...")
+    result = permutation_importance(model, X_test, y_test, n_repeats=10, random_state=42, n_jobs=-1)
+    sorted_idx = result.importances_mean.argsort()[::-1]
 
-# Load preprocessed dataset
-file_path = "prepared_data.parquet"
-df = pd.read_parquet(file_path)
-
-# Drop rows with missing GDP values
-df = df.dropna(subset=["GDP"])
-
-# Define target and features
-target_column = "GDP"
-X = df.drop(columns=[target_column])
-y = df[target_column]
-
-# Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Further validation split
-X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
-
-# Dictionary of models to evaluate
-models = {
-    "KNN": KNeighborsRegressor(n_neighbors=5),
-    "Decision Tree": DecisionTreeRegressor(max_depth=10, random_state=42),
-    "Linear Regression": LinearRegression(),
-    "Random Forest": RandomForestRegressor(n_estimators=100, max_depth=20, random_state=42),
-    "XGBoost": XGBRegressor(n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42)
-}
-
-# Train and evaluate each model
-for name, model in models.items():
-    model.fit(X_train, y_train)
-    evaluate_model(model, X_val, y_val, name)
+    # Plot importance
+    plt.figure(figsize=(10, 6))
+    plt.barh(range(len(sorted_idx)), result.importances_mean[sorted_idx], align='center', color='steelblue')
+    plt.yticks(range(len(sorted_idx)), [feature_names[i] for i in sorted_idx])
+    plt.xlabel("Mean Importance (permutation)")
+    plt.title(f"Permutation Importance - {name}")
+    plt.gca().invert_yaxis()
+    plt.tight_layout()
+    plt.show()
