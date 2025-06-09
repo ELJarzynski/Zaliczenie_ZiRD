@@ -9,16 +9,16 @@ and will employ the Scikit-learn library to train the machine learning model.
 # Model Results
 
 ## K Nearest Neighbors
-![K Nearest Neighbors Error](https://github.com/ELJarzynski/UM-Customer-Airline-Satisfaction-Prediction-RandomForestClassifier/blob/main/images/errorKNN.png)
+![K Nearest Neighbors Error](https://github.com/ELJarzynski/Zaliczenie_ZiRD/blob/master/Customers_Satisfaction/images/errorKNN.png)
 
 ## Logistic Regression
-![Logistic Regression Error](https://github.com/ELJarzynski/UM-Customer-Airline-Satisfaction-Prediction-RandomForestClassifier/blob/main/images/errorLR.png)
+![Logistic Regression Error](https://github.com/ELJarzynski/Zaliczenie_ZiRD/blob/master/Customers_Satisfaction/images/errorLR.png)
 
 ## Decision Tree Classifier
-![Decision Tree Classifier Error](https://github.com/ELJarzynski/UM-Customer-Airline-Satisfaction-Prediction-RandomForestClassifier/blob/main/images/errorTree.png)
+![Decision Tree Classifier Error](https://github.com/ELJarzynski/Zaliczenie_ZiRD/blob/master/Customers_Satisfaction/images/errorTree.png)
 
 ## Random Forest Classifier
-![Random Forest Classifier Error](https://github.com/ELJarzynski/UM-Customer-Airline-Satisfaction-Prediction-RandomForestClassifier/blob/main/images/errorForest.png)
+![Random Forest Classifier Error](https://github.com/ELJarzynski/Zaliczenie_ZiRD/blob/master/Customers_Satisfaction/images/errorForest.png)
 
 # Summary
 
