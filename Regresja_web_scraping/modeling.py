@@ -16,6 +16,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
+from xgboost import XGBRegressor
 
 # Set matplotlib backend to avoid compatibility issues with PyCharm
 import matplotlib
@@ -69,7 +70,8 @@ models = {
     "KNN": KNeighborsRegressor(n_neighbors=5),
     "Decision Tree": DecisionTreeRegressor(max_depth=10, random_state=42),
     "Linear Regression": LinearRegression(),
-    "Random Forest": RandomForestRegressor(n_estimators=100, max_depth=20, random_state=42)
+    "Random Forest": RandomForestRegressor(n_estimators=100, max_depth=20, random_state=42),
+    "XGBoost": XGBRegressor(n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42)
 }
 
 # Train and evaluate each model
