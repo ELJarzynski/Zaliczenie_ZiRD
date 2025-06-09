@@ -67,7 +67,6 @@ scaler_pipeline = make_pipeline(
     MinMaxScaler()
 )
 
-
 # Configuring the ColumnTransformer
 preprocessing_pipeline = ColumnTransformer(
     transformers=[

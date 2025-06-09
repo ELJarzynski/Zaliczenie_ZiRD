@@ -59,7 +59,7 @@ gdp_all = pd.concat(dfs, ignore_index=True).drop_duplicates()
 # Reshape the data from wide format (years as columns) to long format (one row per year)
 gdp_long = pd.melt(
     gdp_all,
-    id_vars=["Country"],    # keep the Country column unchanged
+    id_vars=["Country"],
     var_name="Year",        # new column for years
     value_name="GDP"        # new column for GDP values
 )
@@ -72,10 +72,6 @@ gdp_long["Country"] = gdp_long["Country"].astype(str)
 # Save the transformed data to a CSV file without the index
 gdp_long.to_csv("gdp_1980-2025-wiki.csv", index=False)
 
-print("✅ Data saved to gdp_1980-2025-wiki.csv – number of records:", len(gdp_long))
-print(gdp_long.head())
-
-# --- Step 2: Save the cleaned dataset to Pickle and Parquet formats, verifying data consistency ---
 
 # Drop rows with missing GDP values
 gdp_long_clean = gdp_long.dropna(subset=["GDP"])
@@ -83,7 +79,7 @@ gdp_long_clean = gdp_long.dropna(subset=["GDP"])
 # Check that all rows are within the valid year range and have non-null GDP values
 if gdp_long_clean["Year"].between(1980, 2025).all() and gdp_long_clean["GDP"].notnull().all():
     gdp_long_clean.to_parquet("gdp_1980_2025_wiki.parquet", index=False)
-    print("✅ Data saved to Parquet file: gdp_1980_2025_wiki.parquet")
+    print("Data saved to Parquet file: gdp_1980_2025_wiki.parquet")
 
     gdp_long_clean.to_pickle("gdp_1980_2025_wiki.pkl")
     print("Data saved to Pickle file: gdp_1980_2025_wiki.pkl")

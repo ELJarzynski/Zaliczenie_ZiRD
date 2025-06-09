@@ -10,10 +10,10 @@ Raises:
 
 import pandas as pd
 
-# Load data from CSV
+
 df = pd.read_csv("Airline_customer_satisfaction.csv")
 
-# Expected column types (column name: Python or NumPy dtype)
+# Expected column types
 expected_types = {
     "satisfaction": "object",
     "Customer Type": "object",

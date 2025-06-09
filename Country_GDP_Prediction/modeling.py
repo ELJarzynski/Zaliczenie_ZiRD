@@ -15,8 +15,6 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
-
-# Set matplotlib backend to avoid compatibility issues with PyCharm
 import matplotlib
 matplotlib.use('TkAgg')
 
