@@ -49,4 +49,4 @@ for col, expected_type in expected_types.items():
 
 # Save to a .parquet file if all checks pass
 df.to_parquet("Airline_customer_satisfaction.parquet", index=False)
-print("✅ Column types are valid. Data saved to Airline_customer_satisfaction.parquet.")
+print("Column types are valid. Data saved to Airline_customer_satisfaction.parquet.")

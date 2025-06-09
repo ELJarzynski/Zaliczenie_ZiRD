@@ -9,7 +9,7 @@ We obtained the data by scraping tables from Wikipedia and used the Scikit-learn
 
 # Model Results
 We tested 5 regression models. The following 4 produced the best results:
-## Random forest regressor
+## Random Forest Regressor
 ![K Nearest Neighbors Error](https://github.com/ELJarzynski/Zaliczenie_ZiRD/blob/master/Regresja_web_scraping/images/randomforest_output.png)
 
 ## Linear Regression
@@ -32,7 +32,7 @@ We tested 5 regression models. The following 4 produced the best results:
 ## Decision Tree Classifier
 ![Decision Tree Classifier Error](https://github.com/ELJarzynski/Zaliczenie_ZiRD/blob/master/Regresja_web_scraping/images/importance_Tree.png)
 
-## But the best one was XGBoost
+## The best one was XGBoost
 ![Random Forest Classifier Error](https://github.com/ELJarzynski/Zaliczenie_ZiRD/blob/master/Regresja_web_scraping/images/importance_XGBoost.png)
 
 # Summary

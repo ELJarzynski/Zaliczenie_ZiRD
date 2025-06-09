@@ -54,20 +54,21 @@ for n in [5, 10, 15, 20, 25]:
     df_clean[col_name] = diff_n_years(df_clean, n)
 
 """Defining different groups of columns that will be processed using ColumnTransformer"""
-# Definiowanie kolumn dla różnych enkoderów
+# Defining columns for different encoders
 ordinal_cols = ['Country']
 scaling_cols = ["GDP_diff_1",  "GDP_diff_5",  "GDP_diff_10",  "GDP_diff_15",  "GDP_diff_20",  "GDP_diff_25"]
 
 """Preprocessing and scaling using ColumnTransformer"""
-# Inicjalizacja enkoderów
+# Initializing the encoders
 ordinal_preprocessor = OrdinalEncoder()
 
-# Inicjalizacja estymatora
+# Initializing the scaler pipeline
 scaler_pipeline = make_pipeline(
     MinMaxScaler()
 )
 
-# Konfiguracja ColumnTransformer
+
+# Configuring the ColumnTransformer
 preprocessing_pipeline = ColumnTransformer(
     transformers=[
         ('ordinal', ordinal_preprocessor, ordinal_cols),
@@ -76,7 +77,7 @@ preprocessing_pipeline = ColumnTransformer(
 )
 
 """Making new DataFrame"""
-# Transformacja danych i utworzenie nowego DataFrame z przekszatłconymi danymi
+# Transforming the data and creating a new DataFrame with the processed features
 data_preprocessed = pd.DataFrame(
     preprocessing_pipeline.fit_transform(df_clean),
     columns=ordinal_cols + scaling_cols,
