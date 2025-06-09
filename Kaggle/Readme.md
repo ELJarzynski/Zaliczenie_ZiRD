@@ -3,7 +3,7 @@
 This project aims to achieve high-quality classification of airline customer satisfaction. 
 The dataset consists of 22 columns, which present factors that influence passenger satisfaction. 
 
-I am using the dataset from [Kaggle](https://www.kaggle.com/datasets/yakhyojon/customer-satisfaction-in-airline) 
+We are using the dataset from [Kaggle](https://www.kaggle.com/datasets/yakhyojon/customer-satisfaction-in-airline) 
 and will employ the Scikit-learn library to train the machine learning model.
 
 # Model Results
